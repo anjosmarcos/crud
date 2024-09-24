@@ -1,8 +1,24 @@
+import { todoController } from "@ui/controller/todo";
 import { GlobalStyles } from "@ui/theme/globalStyles";
+import React from "react";
 
 const bg = "http://localhost:3000/bg.avif";
 
+// interface HomeTodo {
+//     id: string;
+//     content: string;
+// }
+
 function HomePage() {
+    const [todos, setTodos] = React.useState([]);
+
+    // Load infons onload
+    React.useEffect(() => {
+        todoController.get().then((todos) => {
+            setTodos(todos);
+        });
+    }, []);
+
     return (
         <main>
             <GlobalStyles themeName="indigo" />
@@ -43,25 +59,20 @@ function HomePage() {
                     </thead>
 
                     <tbody>
-                        <tr>
-                            <td>
-                                <input type="checkbox" />
-                            </td>
-                            <td>d4f26</td>
-                            <td>
-                                Conteúdo de uma TODO Lorem ipsum dolor sit amet
-                                consectetur adipisicing elit. Eaque vero facilis
-                                obcaecati, autem aliquid eius! Consequatur eaque
-                                doloribus laudantium soluta optio odit,
-                                provident, ab voluptates doloremque voluptas
-                                recusandae aspernatur aperiam.
-                            </td>
-                            <td align="right">
-                                <button data-type="delete">Apagar</button>
-                            </td>
-                        </tr>
+                        {todos.map((todo) => (
+                            <tr key={todo.id}>
+                                <td>
+                                    <input type="checkbox" />
+                                </td>
+                                <td>{todo.id.substring(0, 4)}</td>
+                                <td>{todo.content}</td>
+                                <td align="right">
+                                    <button data-type="delete">Apagar</button>
+                                </td>
+                            </tr>
+                        ))}
 
-                        <tr>
+                        {/* <tr>
                             <td
                                 colSpan={4}
                                 align="center"
@@ -96,7 +107,7 @@ function HomePage() {
                                     </span>
                                 </button>
                             </td>
-                        </tr>
+                        </tr> */}
                     </tbody>
                 </table>
             </section>
